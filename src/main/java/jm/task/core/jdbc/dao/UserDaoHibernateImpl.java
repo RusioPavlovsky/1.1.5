@@ -6,6 +6,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -36,7 +38,7 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public void dropUsersTable() {
         try(Statement statement = Util.getConnection().createStatement()) {
-            statement.executeUpdate("delete from users");
+            statement.executeUpdate("drop table users");
         } catch (ClassNotFoundException | SQLException e) {
             e.getMessage();
         }
@@ -76,7 +78,10 @@ public class UserDaoHibernateImpl implements UserDao {
     public void cleanUsersTable() {
         Session session = Util.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("delete from User");
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaDelete<User> criteriaDelete = builder.createCriteriaDelete(User.class);
+        criteriaDelete.from(User.class);
+        session.createQuery(criteriaDelete).executeUpdate();
         transaction.commit();
         session.close();
     }
