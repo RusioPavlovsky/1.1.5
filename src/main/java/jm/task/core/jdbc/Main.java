@@ -11,18 +11,10 @@ import java.sql.Statement;
 
 public class Main {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
+        String name = "Rus" , lastname = "Pav";
+        byte age = 21;
         UserService userService = new UserServiceImpl();
-        userService.createUsersTable();
-        userService.saveUser("Ruslan", "Pavlov", (byte) 21);
-        System.out.println("User с именем Ruslan добавлен в базу данных");
-        userService.saveUser("Sultan", "Suleyman", (byte) 21);
-        System.out.println("User с именем Sultan добавлен в базу данных");
-        userService.saveUser("John", "Snow", (byte) 18);
-        System.out.println("User с именем John добавлен в базу данных");
-        userService.saveUser("Omar", "Hayam", (byte) 99);
-        System.out.println("User с именем Omar добавлен в базу данных");
-        System.out.println(userService.getAllUsers());
-        userService.cleanUsersTable();
-        userService.dropUsersTable();
+        userService.saveUser(name,lastname,age);
+
     }
 }
